@@ -28,10 +28,10 @@ curl http://localhost:7474/movie/graph?limit=100
 JAX-RS is a RESTful resource library in the JDK that allows you to specify classes as mapped resources and their methods as concrete
 endpoints for these resources.
 
-Those methods can be passed parameters from the http request but also injected services from the underlying system - in our case `GraphDatabaseService` and `CypherExecutor` instances.
+Those methods can be passed parameters from the http request but also injected services from the underlying system - in our case `GraphDatabaseService`.
 The endpoint method will then use the services with the parameters to execute its task and return a representation of the result data to be consumed by the client.
 
-In our case we just get an instance of the `ExecutionEngine` to execute Cypher queries with parameters.
+In our case we just get an instance of the `GraphDatabaseService` to execute Cypher queries with parameters.
 The results of the queries are converted into JSON and returned.
 
 === Run locally:
@@ -43,11 +43,11 @@ Build the project with
 mvn package
 ----
 
-Then copy the generated jar-file in `target/neo4j-movies-2.0-SNAPSHOT.jar` into the plugins directory of your server `/path/to/neo4j/plugins`.
+Then copy the generated jar-file in `target/neo4j-movies-3.0-SNAPSHOT.jar` into the plugins directory of your server `/path/to/neo4j/plugins`.
 To register the extension you have to edit the `/path/to/neo4j/conf/neo4j-server.properties` and add a line like this:
 
 ----
-org.neo4j.server.thirdparty_jaxrs_classes=example.extension.movies=/movie
+dbms.unmanaged_extension_classes=example.extension.movies=/movie
 ----
 
 which registers the package `example.extension.movies` of our resource for the `/movie` root context.

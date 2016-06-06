@@ -3,7 +3,6 @@ package example.extension.movies;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.neo4j.cypher.javacompat.ExecutionEngine;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.test.TestGraphDatabaseFactory;
 
@@ -14,7 +13,6 @@ import java.util.Map;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.neo4j.helpers.collection.MapUtil.map;
 
 @SuppressWarnings("unchecked")
@@ -26,17 +24,16 @@ public class MovieServiceTest {
     @Before
     public void setUp() throws Exception {
         db = new TestGraphDatabaseFactory().newImpermanentDatabase();
-        ExecutionEngine executionEngine = new ExecutionEngine(db);
-        createData(executionEngine);
-        this.movieService = new MovieService(executionEngine);
+        createData(db);
+        this.movieService = new MovieService(db);
     }
 
-    private void createData(ExecutionEngine executionEngine) {
+    private void createData(GraphDatabaseService db) {
         String query = "CREATE (:Movie {title:'The Matrix', released: 1999, tagline: 'The one and only'})" +
                 " <-[:ACTED_IN {roles:['Neo']}]-" +
                 " (:Person {name:'Keanu Reeves',born:1964})";
 
-        executionEngine.execute(query).dumpToString();
+        db.execute(query).close();
     }
 
     @After

@@ -1,7 +1,7 @@
 package example.extension.movies;
 
 import org.codehaus.jackson.map.ObjectMapper;
-import org.neo4j.server.database.CypherExecutor;
+import org.neo4j.graphdb.GraphDatabaseService;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,8 +17,8 @@ public class MovieResource {
     private static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private MovieService service;
 
-    public MovieResource(@Context CypherExecutor cypherExecutor) {
-        this.service = new MovieService(cypherExecutor.getExecutionEngine());
+    public MovieResource(@Context GraphDatabaseService db) {
+        this.service = new MovieService(db);
     }
 
     @GET
